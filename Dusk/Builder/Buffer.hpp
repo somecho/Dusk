@@ -3,6 +3,7 @@
 #include <webgpu/webgpu_cpp.h>
 
 #include <cstdint>
+#include <glm/mat4x4.hpp>
 #include <vector>
 
 namespace Dusk {
@@ -18,6 +19,16 @@ class Buffer {
   Buffer<T, U>& data(std::vector<T> data) {
     m_data = data;
     desc.size = data.size() * sizeof(T);
+    return *this;
+  }
+
+  Buffer<T, U>& data(glm::mat4 data) {
+    for (int i = 0; i < 4; i++) {
+      for (int j = 0; j < 4; j++) {
+        m_data.push_back(data[i][j]);
+      }
+    }
+    desc.size = 16 * sizeof(T);
     return *this;
   }
 

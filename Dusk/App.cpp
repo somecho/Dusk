@@ -1,7 +1,7 @@
-#include <webgpu/webgpu_cpp.h>
-
 #include <Dusk/App.hpp>
+#include <Dusk/Drawer.hpp>
 #include <format>
+#include <glm/ext/matrix_transform.hpp>
 // do not change this order
 // WebGPU headers must be included before this define
 #define GLFW_EXPOSE_NATIVE_X11
@@ -75,6 +75,18 @@ void App::run() {
     }
     SUCCESS_WGPU("Successfully gotten queue");
   }
+
+  wgpu::SurfaceCapabilities caps;
+  surface.GetCapabilities(adapter, &caps);
+
+  drawer = Dusk::Drawer(device, surface, caps.formats[0]);
+
+  glm::mat4 translate = glm::translate(glm::mat4(1.0f), glm::vec3(-1, 1, 0));
+  glm::mat4 scale = glm::scale(
+      glm::mat4(1.0f),
+      glm::vec3(2.0 / (float)getWidth(), -2.0 / (float)getHeight(), 1));
+
+  drawer.setTransformMatrix(translate * scale);
 
   setup();
 

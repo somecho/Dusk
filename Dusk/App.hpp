@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <webgpu/webgpu_cpp.h>
 
+#include <Dusk/Drawer.hpp>
 #include <cstdint>
 #include <thread>
 
@@ -30,6 +31,7 @@ class App {
   wgpu::Adapter adapter;
   wgpu::Device device;
   wgpu::Queue queue;
+  Dusk::Drawer drawer;
 
  private:
   int width = 1280;

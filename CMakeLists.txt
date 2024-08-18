@@ -9,6 +9,7 @@ target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="${CMAKE_CURRENT
 
 set(${PROJECT_NAME}_INCLUDES
     ${PROJECT_NAME}/App.hpp
+    ${PROJECT_NAME}/Drawer.hpp
     ${PROJECT_NAME}/Shader.hpp
     ${PROJECT_NAME}/Builder/Buffer.hpp
 )
@@ -17,6 +18,7 @@ target_sources(${PROJECT_NAME}
     PRIVATE
         ${${PROJECT_NAME}_INCLUDES}
         ${PROJECT_NAME}/App.cpp
+        ${PROJECT_NAME}/Drawer.cpp
         ${PROJECT_NAME}/Shader.cpp
 )
 
