@@ -1,3 +1,5 @@
+#include <webgpu/webgpu_cpp.h>
+
 #include <Dusk/App.hpp>
 #include <format>
 // do not change this order
