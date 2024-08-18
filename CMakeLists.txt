@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Dusk VERSION 0.0.1)
+project(Dusk VERSION 0.0.2)
 
 add_library(${PROJECT_NAME})
 
