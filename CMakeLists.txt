@@ -8,12 +8,14 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
 
 set(${PROJECT_NAME}_INCLUDES
     ${PROJECT_NAME}/App.hpp
+    ${PROJECT_NAME}/Shader.hpp
 )
 
 target_sources(${PROJECT_NAME}
     PRIVATE
         ${${PROJECT_NAME}_INCLUDES}
         ${PROJECT_NAME}/App.cpp
+        ${PROJECT_NAME}/Shader.cpp
 )
 
 find_package(Dawn REQUIRED)
