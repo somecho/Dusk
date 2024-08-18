@@ -12,9 +12,17 @@ class App {
  public:
   App();
   virtual ~App();
-  void start();
+  void run();
   virtual void onKeypressed([[maybe_unused]] int key,
                             [[maybe_unused]] int action) {};
+
+  inline int getWidth() {
+    return width;
+  }
+
+  inline int getHeight() {
+    return height;
+  }
 
  protected:
   wgpu::Instance instance;

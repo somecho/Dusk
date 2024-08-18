@@ -47,7 +47,7 @@ App::~App() {
   SUCCESS_GLFW("Successfully terminated GLFW");
 }
 
-void App::start() {
+void App::run() {
   LOG_GLFW("Creating window...");
   static App *appInstance = this;
   glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
