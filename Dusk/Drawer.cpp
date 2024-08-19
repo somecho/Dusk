@@ -139,6 +139,10 @@ Drawer& Drawer::color(Rgba color) {
   return *this;
 };
 
+Drawer& Drawer::rect(glm::vec2 pos, float w, float h) {
+  return rect(pos.x, pos.y, w, h);
+}
+
 Drawer& Drawer::rect(float x, float y, float w, float h) {
   uint32_t startIndex = vertices.size() / 2;
 

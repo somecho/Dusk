@@ -25,6 +25,10 @@ class App {
     return height;
   }
 
+  inline glm::vec2 getCenter() {
+    return {width * 0.5, height * 0.5};
+  }
+
  protected:
   wgpu::Instance instance;
   wgpu::Surface surface;

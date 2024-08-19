@@ -6,6 +6,7 @@
 #include <cstdint>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/mat4x4.hpp>
+#include <glm/vec2.hpp>
 #include <vector>
 
 namespace Dusk {
@@ -25,7 +26,9 @@ class Drawer {
          wgpu::TextureFormat format);
 
   Drawer& color(Rgba color);
+
   Drawer& rect(float x, float y, float w, float h);
+  Drawer& rect(glm::vec2 pos, float w, float h);
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);

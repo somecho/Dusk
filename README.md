@@ -10,3 +10,9 @@
 - refactor Drawer init
 - pipeline builder
 - renderpass builder
+
+## ROADMAP
+
+### 0.1.0 
+- 2D API done
+- screenshot 
