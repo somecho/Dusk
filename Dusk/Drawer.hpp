@@ -25,8 +25,12 @@ class Drawer {
   Drawer(wgpu::Device& device, wgpu::Surface& surface,
          wgpu::TextureFormat format);
 
-
+  Drawer& clear(float r, float g, float b, float a = 1.0);
+  Drawer& clear(float value, float alpha = 1.0);
   Drawer& clear(Rgba color);
+
+  Drawer& color(float r, float g, float b, float a = 1.0);
+  Drawer& color(float value, float alpha = 1.0);
   Drawer& color(Rgba color);
 
   Drawer& rect(float x, float y, float w, float h);

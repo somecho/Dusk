@@ -20,4 +20,5 @@
     - polygon
     - circle
     - triangle 
+- transformation API
 - screenshot function

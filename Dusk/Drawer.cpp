@@ -134,10 +134,26 @@ Drawer::~Drawer() {
   }
 }
 
+Drawer& Drawer::clear(float r, float g, float b, float a) {
+  return clear({r, g, b, a});
+};
+
+Drawer& Drawer::clear(float value, float alpha) {
+  return clear({value, value, value, alpha});
+};
+
 Drawer& Drawer::clear(Rgba color) {
   m_clearColor = color;
   return *this;
 }
+
+Drawer& Drawer::color(float r, float g, float b, float a) {
+  return color({r, g, b, a});
+};
+
+Drawer& Drawer::color(float value, float alpha) {
+  return color({value, value, value, alpha});
+};
 
 Drawer& Drawer::color(Rgba color) {
   m_color = color;
