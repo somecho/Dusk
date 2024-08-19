@@ -25,6 +25,8 @@ class Drawer {
   Drawer(wgpu::Device& device, wgpu::Surface& surface,
          wgpu::TextureFormat format);
 
+
+  Drawer& clear(Rgba color);
   Drawer& color(Rgba color);
 
   Drawer& rect(float x, float y, float w, float h);
@@ -71,6 +73,7 @@ class Drawer {
   wgpu::BindGroup bindGroup;
 
   Rgba m_color = {1.0, 1.0, 1.0, 1.0};
+  Rgba m_clearColor = {0.0, 0.0, 0.0, 0.0};
 };
 
 }  // namespace Dusk

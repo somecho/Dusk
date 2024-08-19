@@ -134,6 +134,11 @@ Drawer::~Drawer() {
   }
 }
 
+Drawer& Drawer::clear(Rgba color) {
+  m_clearColor = color;
+  return *this;
+}
+
 Drawer& Drawer::color(Rgba color) {
   m_color = color;
   return *this;
@@ -205,7 +210,8 @@ void Drawer::draw() {
   attachment.view = view;
   attachment.loadOp = wgpu::LoadOp::Clear;
   attachment.storeOp = wgpu::StoreOp::Store;
-  attachment.clearValue = wgpu::Color{1.0, 1.0, 1.0, 1.0};
+  attachment.clearValue = wgpu::Color{m_clearColor.r, m_clearColor.g,
+                                      m_clearColor.b, m_clearColor.a};
 
   // create render pass
   wgpu::RenderPassDescriptor renderDesc{};

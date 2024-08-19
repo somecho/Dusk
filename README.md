@@ -6,13 +6,18 @@
     - ellipse
     - polygon
     - circle
-- overload pos and color 
 - refactor Drawer init
 - pipeline builder
 - renderpass builder
+- background color
+- fps 
 
 ## ROADMAP
 
 ### 0.1.0 
-- 2D API done
-- screenshot 
+- 2D API
+    - ellipse 
+    - polygon
+    - circle
+    - triangle 
+- screenshot function
