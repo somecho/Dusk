@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.15)
-project(Dusk VERSION 0.0.5)
+project(Dusk VERSION 0.0.6)
 
 add_library(${PROJECT_NAME})
 
@@ -12,6 +12,8 @@ set(${PROJECT_NAME}_INCLUDES
     ${PROJECT_NAME}/Drawer.hpp
     ${PROJECT_NAME}/Shader.hpp
     ${PROJECT_NAME}/Builder/Buffer.hpp
+    ${PROJECT_NAME}/Drawable/Interface.hpp
+    ${PROJECT_NAME}/Drawable/Rect.hpp
 )
 
 target_sources(${PROJECT_NAME}
@@ -20,6 +22,7 @@ target_sources(${PROJECT_NAME}
         ${PROJECT_NAME}/App.cpp
         ${PROJECT_NAME}/Drawer.cpp
         ${PROJECT_NAME}/Shader.cpp
+        ${PROJECT_NAME}/Drawable/Rect.cpp
 )
 
 find_package(Dawn REQUIRED)
