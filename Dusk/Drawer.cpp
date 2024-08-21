@@ -1,6 +1,11 @@
 #include <Dusk/Builder/Buffer.hpp>
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
+#include <iostream>
+#include <memory>
+#include <variant>
+
+#include "Dusk/Drawable/Rect.hpp"
 
 namespace Dusk {
 
@@ -134,17 +139,16 @@ Drawer::~Drawer() {
   }
 }
 
-Drawer& Drawer::clear(float r, float g, float b, float a) {
-  return clear({r, g, b, a});
+void Drawer::clear(float r, float g, float b, float a) {
+  clear({r, g, b, a});
 };
 
-Drawer& Drawer::clear(float value, float alpha) {
-  return clear({value, value, value, alpha});
+void Drawer::clear(float value, float alpha) {
+  clear({value, value, value, alpha});
 };
 
-Drawer& Drawer::clear(Rgba color) {
+void Drawer::clear(Rgba color) {
   m_clearColor = color;
-  return *this;
 }
 
 Drawer& Drawer::color(float r, float g, float b, float a) {
@@ -208,7 +212,62 @@ Drawer& Drawer::rect(float x, float y, float w, float h) {
   return *this;
 }
 
+Drawable::Rect& Drawer::rect() {
+  std::variant<Drawable::Rect> r = Drawable::Rect();
+  auto ptr = std::make_shared<std::variant<Drawable::Rect>>(r);
+  drawables.push_back(ptr);
+  return std::get<Drawable::Rect>(*ptr);
+  // return rp->rect;
+}
+
 void Drawer::draw() {
+  // add vertices
+  uint32_t startIndex = 0;
+  for (auto drawable : drawables) {
+    if (std::holds_alternative<Drawable::Rect>(*drawable)) {
+      auto r = std::get<Drawable::Rect>(*drawable);
+      vertices.push_back(r.x());
+      vertices.push_back(r.y());
+      colors.push_back(r.r());
+      colors.push_back(r.g());
+      colors.push_back(r.b());
+      colors.push_back(r.a());
+      // vertex 1
+      vertices.push_back(r.x() + r.w());
+      vertices.push_back(r.y());
+      colors.push_back(r.r());
+      colors.push_back(r.g());
+      colors.push_back(r.b());
+      colors.push_back(r.a());
+      // vertex 2
+      vertices.push_back(r.x() + r.w());
+      vertices.push_back(r.y() + r.h());
+      colors.push_back(r.r());
+      colors.push_back(r.g());
+      colors.push_back(r.b());
+      colors.push_back(r.a());
+      // vertex 3
+      vertices.push_back(r.x());
+      vertices.push_back(r.y() + r.h());
+      colors.push_back(r.r());
+      colors.push_back(r.g());
+      colors.push_back(r.b());
+      colors.push_back(r.a());
+
+      // tri 1
+      indices.push_back(startIndex);
+      indices.push_back(startIndex + 1);
+      indices.push_back(startIndex + 2);
+      // tri 2
+      indices.push_back(startIndex);
+      indices.push_back(startIndex + 2);
+      indices.push_back(startIndex + 3);
+      startIndex += 4;
+      continue;
+    }
+  }
+
+  //
   wgpu::Queue queue = device.GetQueue();
   syncBuffer<float, wgpu::BufferUsage::Vertex>(vertexBuffer, vertices);
   syncBuffer<float, wgpu::BufferUsage::Vertex>(colorBuffer, colors);
@@ -262,6 +321,7 @@ void Drawer::flushData() {
   vertices.clear();
   indices.clear();
   colors.clear();
+  drawables.clear();
 }
 
 }  // namespace Dusk

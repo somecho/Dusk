@@ -61,7 +61,7 @@ class Dimensions {
   }
 
   Derived& h(float height) {
-    this->width = height;
+    this->height = height;
     return static_cast<Derived&>(*this);
   }
 
@@ -105,6 +105,22 @@ class Color {
 
   glm::vec3 rgb() {
     return glm::vec3(color);
+  }
+
+  float r() {
+    return color.r;
+  }
+
+  float g() {
+    return color.g;
+  }
+
+  float b() {
+    return color.b;
+  }
+
+  float a() {
+    return color.a;
   }
 
  private:

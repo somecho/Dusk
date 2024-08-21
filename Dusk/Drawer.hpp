@@ -3,10 +3,12 @@
 #include <webgpu/webgpu_cpp.h>
 
 #include <Dusk/Builder/Buffer.hpp>
+#include <Dusk/Drawable/Rect.hpp>
 #include <cstdint>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
+#include <variant>
 #include <vector>
 
 namespace Dusk {
@@ -25,9 +27,9 @@ class Drawer {
   Drawer(wgpu::Device& device, wgpu::Surface& surface,
          wgpu::TextureFormat format);
 
-  Drawer& clear(float r, float g, float b, float a = 1.0);
-  Drawer& clear(float value, float alpha = 1.0);
-  Drawer& clear(Rgba color);
+  void clear(float r, float g, float b, float a = 1.0);
+  void clear(float value, float alpha = 1.0);
+  void clear(Rgba color);
 
   Drawer& color(float r, float g, float b, float a = 1.0);
   Drawer& color(float value, float alpha = 1.0);
@@ -35,9 +37,11 @@ class Drawer {
 
   Drawer& rect(float x, float y, float w, float h);
   Drawer& rect(glm::vec2 pos, float w, float h);
+  Drawable::Rect& rect();
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);
+  std::vector<std::shared_ptr<std::variant<Drawable::Rect>>> drawables;
 
  private:
   void flushData();
