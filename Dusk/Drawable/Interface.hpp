@@ -56,17 +56,33 @@ class Dimensions {
     return static_cast<Derived&>(*this);
   }
 
-  float w() {
-    return width;
-  }
-
   Derived& h(float height) {
     this->height = height;
     return static_cast<Derived&>(*this);
   }
 
+  Derived& wh(float width, float height) {
+    this->width = width;
+    this->height = height;
+    return static_cast<Derived&>(*this);
+  }
+
+  Derived& wh(glm::vec2 dimensions) {
+    this->width = dimensions.x;
+    this->height = dimensions.y;
+    return static_cast<Derived&>(*this);
+  }
+
+  float w() {
+    return width;
+  }
+
   float h() {
     return height;
+  }
+
+  glm::vec2 wh() {
+    return glm::vec2(width, height);
   }
 
  private:
