@@ -31,10 +31,6 @@ class Drawer {
   void clear(float value, float alpha = 1.0);
   void clear(Rgba color);
 
-  Drawer& color(float r, float g, float b, float a = 1.0);
-  Drawer& color(float value, float alpha = 1.0);
-  Drawer& color(Rgba color);
-
   Drawable::Rect& rect();
 
   void draw();
@@ -80,7 +76,6 @@ class Drawer {
   wgpu::Buffer transformBuffer;
   wgpu::BindGroup bindGroup;
 
-  Rgba m_color = {1.0, 1.0, 1.0, 1.0};
   Rgba m_clearColor = {0.0, 0.0, 0.0, 0.0};
 };
 

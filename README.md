@@ -18,6 +18,7 @@
 ## ROADMAP
 
 ### 0.1.0 
+- screensize setable
 - use 3D vertices and orthographic projection
 - 2D API
     - ellipse 

@@ -151,19 +151,6 @@ void Drawer::clear(Rgba color) {
   m_clearColor = color;
 }
 
-Drawer& Drawer::color(float r, float g, float b, float a) {
-  return color({r, g, b, a});
-};
-
-Drawer& Drawer::color(float value, float alpha) {
-  return color({value, value, value, alpha});
-};
-
-Drawer& Drawer::color(Rgba color) {
-  m_color = color;
-  return *this;
-};
-
 Drawable::Rect& Drawer::rect() {
   std::variant<Drawable::Rect> r = Drawable::Rect();
   auto ptr = std::make_shared<std::variant<Drawable::Rect>>(r);
