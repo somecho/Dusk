@@ -93,6 +93,7 @@ class Color {
     color.r = value;
     color.g = value;
     color.b = value;
+    color.a = alpha;
     return static_cast<Derived&>(*this);
   }
 

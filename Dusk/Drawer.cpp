@@ -1,7 +1,6 @@
 #include <Dusk/Builder/Buffer.hpp>
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
-#include <iostream>
 #include <memory>
 #include <variant>
 
