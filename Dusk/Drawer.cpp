@@ -20,7 +20,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
     @group(0) @binding(0) var<uniform> transformMat: mat4x4f;
 
     struct VertexInput {
-        @location(0) pos: vec2f,
+        @location(0) pos: vec3f,
         @location(1) col: vec4f
     };
 
@@ -32,7 +32,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
     @vertex
     fn vs_main(in: VertexInput) -> VertexOutput {
         var out: VertexOutput;
-        out.pos =  transformMat * vec4f(in.pos,0.0,1.0);
+        out.pos =  transformMat * vec4f(in.pos,1.0);
         out.col = in.col;
         return out;
     }
@@ -59,7 +59,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
   vertexBufferLayouts[0].attributeCount = 1;
   vertexBufferLayouts[0].attributes = &positionAttrib;
   vertexBufferLayouts[0].stepMode = wgpu::VertexStepMode::Vertex;
-  vertexBufferLayouts[0].arrayStride = 2 * sizeof(float);
+  vertexBufferLayouts[0].arrayStride = 3 * sizeof(float);
   vertexBufferLayouts[1].attributeCount = 1;
   vertexBufferLayouts[1].attributes = &colorAttrib;
   vertexBufferLayouts[1].stepMode = wgpu::VertexStepMode::Vertex;
@@ -228,6 +228,7 @@ void Drawer::flushData() {
 void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
   vertices.push_back(r.x());
   vertices.push_back(r.y());
+  vertices.push_back(r.z());
   colors.push_back(r.r());
   colors.push_back(r.g());
   colors.push_back(r.b());
@@ -235,6 +236,7 @@ void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
   // vertex 1
   vertices.push_back(r.x() + r.w());
   vertices.push_back(r.y());
+  vertices.push_back(r.z());
   colors.push_back(r.r());
   colors.push_back(r.g());
   colors.push_back(r.b());
@@ -242,6 +244,7 @@ void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
   // vertex 2
   vertices.push_back(r.x() + r.w());
   vertices.push_back(r.y() + r.h());
+  vertices.push_back(r.z());
   colors.push_back(r.r());
   colors.push_back(r.g());
   colors.push_back(r.b());
@@ -249,6 +252,7 @@ void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
   // vertex 3
   vertices.push_back(r.x());
   vertices.push_back(r.y() + r.h());
+  vertices.push_back(r.z());
   colors.push_back(r.r());
   colors.push_back(r.g());
   colors.push_back(r.b());
