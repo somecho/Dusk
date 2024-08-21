@@ -19,7 +19,8 @@
 
 ### 0.1.0 
 - ✅ screensize setable
-- use 3D vertices and orthographic projection
+- ✅ use 3D vertices 
+- orthographic projection
 - msaa 
 - 2D API
     - ellipse 
@@ -31,3 +32,5 @@
 - transformation API
 - screenshot function
 - documentation
+- examples
+- proper setup
