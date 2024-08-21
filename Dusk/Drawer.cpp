@@ -164,104 +164,19 @@ Drawer& Drawer::color(Rgba color) {
   return *this;
 };
 
-Drawer& Drawer::rect(glm::vec2 pos, float w, float h) {
-  return rect(pos.x, pos.y, w, h);
-}
-
-Drawer& Drawer::rect(float x, float y, float w, float h) {
-  uint32_t startIndex = vertices.size() / 2;
-
-  // vertex 0
-  vertices.push_back(x);
-  vertices.push_back(y);
-  colors.push_back(m_color.r);
-  colors.push_back(m_color.g);
-  colors.push_back(m_color.b);
-  colors.push_back(m_color.a);
-  // vertex 1
-  vertices.push_back(x + w);
-  vertices.push_back(y);
-  colors.push_back(m_color.r);
-  colors.push_back(m_color.g);
-  colors.push_back(m_color.b);
-  colors.push_back(m_color.a);
-  // vertex 2
-  vertices.push_back(x + w);
-  vertices.push_back(y + h);
-  colors.push_back(m_color.r);
-  colors.push_back(m_color.g);
-  colors.push_back(m_color.b);
-  colors.push_back(m_color.a);
-  // vertex 3
-  vertices.push_back(x);
-  vertices.push_back(y + h);
-  colors.push_back(m_color.r);
-  colors.push_back(m_color.g);
-  colors.push_back(m_color.b);
-  colors.push_back(m_color.a);
-
-  // tri 1
-  indices.push_back(startIndex);
-  indices.push_back(startIndex + 1);
-  indices.push_back(startIndex + 2);
-  // tri 2
-  indices.push_back(startIndex);
-  indices.push_back(startIndex + 2);
-  indices.push_back(startIndex + 3);
-
-  return *this;
-}
-
 Drawable::Rect& Drawer::rect() {
   std::variant<Drawable::Rect> r = Drawable::Rect();
   auto ptr = std::make_shared<std::variant<Drawable::Rect>>(r);
   drawables.push_back(ptr);
   return std::get<Drawable::Rect>(*ptr);
-  // return rp->rect;
 }
 
 void Drawer::draw() {
-  // add vertices
   uint32_t startIndex = 0;
   for (auto drawable : drawables) {
     if (std::holds_alternative<Drawable::Rect>(*drawable)) {
-      auto r = std::get<Drawable::Rect>(*drawable);
-      vertices.push_back(r.x());
-      vertices.push_back(r.y());
-      colors.push_back(r.r());
-      colors.push_back(r.g());
-      colors.push_back(r.b());
-      colors.push_back(r.a());
-      // vertex 1
-      vertices.push_back(r.x() + r.w());
-      vertices.push_back(r.y());
-      colors.push_back(r.r());
-      colors.push_back(r.g());
-      colors.push_back(r.b());
-      colors.push_back(r.a());
-      // vertex 2
-      vertices.push_back(r.x() + r.w());
-      vertices.push_back(r.y() + r.h());
-      colors.push_back(r.r());
-      colors.push_back(r.g());
-      colors.push_back(r.b());
-      colors.push_back(r.a());
-      // vertex 3
-      vertices.push_back(r.x());
-      vertices.push_back(r.y() + r.h());
-      colors.push_back(r.r());
-      colors.push_back(r.g());
-      colors.push_back(r.b());
-      colors.push_back(r.a());
+      processRect(std::get<Drawable::Rect>(*drawable), startIndex);
 
-      // tri 1
-      indices.push_back(startIndex);
-      indices.push_back(startIndex + 1);
-      indices.push_back(startIndex + 2);
-      // tri 2
-      indices.push_back(startIndex);
-      indices.push_back(startIndex + 2);
-      indices.push_back(startIndex + 3);
       startIndex += 4;
       continue;
     }
@@ -322,6 +237,45 @@ void Drawer::flushData() {
   indices.clear();
   colors.clear();
   drawables.clear();
+}
+
+void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
+  vertices.push_back(r.x());
+  vertices.push_back(r.y());
+  colors.push_back(r.r());
+  colors.push_back(r.g());
+  colors.push_back(r.b());
+  colors.push_back(r.a());
+  // vertex 1
+  vertices.push_back(r.x() + r.w());
+  vertices.push_back(r.y());
+  colors.push_back(r.r());
+  colors.push_back(r.g());
+  colors.push_back(r.b());
+  colors.push_back(r.a());
+  // vertex 2
+  vertices.push_back(r.x() + r.w());
+  vertices.push_back(r.y() + r.h());
+  colors.push_back(r.r());
+  colors.push_back(r.g());
+  colors.push_back(r.b());
+  colors.push_back(r.a());
+  // vertex 3
+  vertices.push_back(r.x());
+  vertices.push_back(r.y() + r.h());
+  colors.push_back(r.r());
+  colors.push_back(r.g());
+  colors.push_back(r.b());
+  colors.push_back(r.a());
+
+  // tri 1
+  indices.push_back(startIndex);
+  indices.push_back(startIndex + 1);
+  indices.push_back(startIndex + 2);
+  // tri 2
+  indices.push_back(startIndex);
+  indices.push_back(startIndex + 2);
+  indices.push_back(startIndex + 3);
 }
 
 }  // namespace Dusk

@@ -35,16 +35,15 @@ class Drawer {
   Drawer& color(float value, float alpha = 1.0);
   Drawer& color(Rgba color);
 
-  Drawer& rect(float x, float y, float w, float h);
-  Drawer& rect(glm::vec2 pos, float w, float h);
   Drawable::Rect& rect();
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);
-  std::vector<std::shared_ptr<std::variant<Drawable::Rect>>> drawables;
 
  private:
   void flushData();
+
+  void processRect(Drawable::Rect & r, uint32_t startIndex);
 
   template <typename T, wgpu::BufferUsage U>
   void syncBuffer(wgpu::Buffer& buffer, const std::vector<T>& data) {
@@ -73,6 +72,7 @@ class Drawer {
   std::vector<float> vertices;
   std::vector<float> colors;
   std::vector<uint32_t> indices;
+  std::vector<std::shared_ptr<std::variant<Drawable::Rect>>> drawables;
 
   wgpu::Buffer vertexBuffer;
   wgpu::Buffer colorBuffer;
