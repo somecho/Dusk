@@ -11,6 +11,18 @@ namespace Interface {
 template <typename Derived>
 class Position {
  public:
+  Derived& xyz(float x, float y, float z) {
+    pos.x = x;
+    pos.y = y;
+    pos.z = z;
+    return static_cast<Derived&>(*this);
+  }
+
+  Derived& xyz(glm::vec3 pos) {
+    this->pos = pos;
+    return static_cast<Derived&>(*this);
+  }
+
   Derived& xy(float x, float y) {
     pos.x = x;
     pos.y = y;
@@ -18,12 +30,9 @@ class Position {
   }
 
   Derived& xy(glm::vec2 pos) {
-    this->pos = pos;
+    this->pos.x = pos.x;
+    this->pos.y = pos.y;
     return static_cast<Derived&>(*this);
-  }
-
-  glm::vec2 xy() {
-    return pos;
   }
 
   Derived& x(float x) {
@@ -31,21 +40,33 @@ class Position {
     return static_cast<Derived&>(*this);
   };
 
-  float x() {
-    return pos.x;
-  }
-
   Derived& y(float y) {
     pos.y = y;
     return static_cast<Derived&>(*this);
+  }
+
+  glm::vec3 xyz() {
+    return pos;
+  }
+
+  glm::vec2 xy() {
+    return pos;
+  }
+
+  float x() {
+    return pos.x;
   }
 
   float y() {
     return pos.y;
   }
 
+  float z() {
+    return pos.z;
+  }
+
  private:
-  glm::vec2 pos{0, 0};
+  glm::vec3 pos{0, 0, 0};
 };
 
 template <typename Derived>

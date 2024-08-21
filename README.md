@@ -18,8 +18,9 @@
 ## ROADMAP
 
 ### 0.1.0 
-- screensize setable
+- ✅ screensize setable
 - use 3D vertices and orthographic projection
+- msaa 
 - 2D API
     - ellipse 
     - polygon
