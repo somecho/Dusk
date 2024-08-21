@@ -49,6 +49,12 @@ App::~App() {
   SUCCESS_GLFW("Successfully terminated GLFW");
 }
 
+void App::run(int width, int height) {
+  this->width = width;
+  this->height = height;
+  run();
+}
+
 void App::run() {
   LOG_GLFW("Creating window...");
   static App *appInstance = this;

@@ -13,7 +13,10 @@ class App {
  public:
   App();
   virtual ~App();
+
+  void run(int width, int height);
   void run();
+
   virtual void onKeypressed([[maybe_unused]] int key,
                             [[maybe_unused]] int action) {};
 
