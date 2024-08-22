@@ -89,7 +89,19 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
   frag.targets = &colTarget;
   pipelineDesc.fragment = &frag;
 
-  pipelineDesc.multisample.count = 1;
+  wgpu::TextureDescriptor texDesc{};
+  texDesc.usage = wgpu::TextureUsage::RenderAttachment;
+  texDesc.sampleCount = 4;
+  texDesc.format = format;
+  wgpu::SurfaceTexture st;
+  surface.GetCurrentTexture(&st);
+  texDesc.size.width = st.texture.GetWidth();
+  texDesc.size.height = st.texture.GetHeight();
+  texDesc.size.depthOrArrayLayers = 1;
+
+  tex = device.CreateTexture(&texDesc);
+
+  pipelineDesc.multisample.count = 4;
   pipelineDesc.multisample.mask = ~0u;  // all bits on
   pipelineDesc.multisample.alphaToCoverageEnabled = false;
 
@@ -195,7 +207,8 @@ void Drawer::draw() {
   wgpu::CommandEncoder encoder = device.CreateCommandEncoder();
   // create attachment
   wgpu::RenderPassColorAttachment attachment{};
-  attachment.view = view;
+  attachment.view = tex.CreateView();
+  attachment.resolveTarget = view;
   attachment.loadOp = wgpu::LoadOp::Clear;
   attachment.storeOp = wgpu::StoreOp::Store;
   attachment.clearValue = wgpu::Color{m_clearColor.r, m_clearColor.g,

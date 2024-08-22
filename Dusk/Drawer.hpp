@@ -66,6 +66,7 @@ class Drawer {
   wgpu::Surface surface;
   wgpu::RenderPipeline pipeline;
   wgpu::TextureFormat format;
+  wgpu::Texture tex;
 
   std::vector<float> vertices;
   std::vector<float> colors;

@@ -22,11 +22,11 @@
 - ✅ use 3D vertices 
 - no clear draw
 - orthographic projection
-- msaa 
+- ✅ msaa 
 - 2D API
     - ellipse 
     - polygon
-    - circle
+    - ✅ circle
     - triangle 
 - ✅ background color
 - fps 
@@ -35,3 +35,4 @@
 - documentation
 - examples
 - proper setup
+- manage resources using shared-ptrs

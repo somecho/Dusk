@@ -13,7 +13,7 @@ class Rect : public Interface::Position<Rect>,
 class Circle : public Interface::Position<Circle>,
                public Interface::Radius<Circle>,
                public Interface::Resolution<Circle>,
-               public Interface::Color<Rect> {};
+               public Interface::Color<Circle> {};
 
 typedef std::variant<Rect, Circle> Shape;
 

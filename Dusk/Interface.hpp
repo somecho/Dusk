@@ -124,7 +124,7 @@ class Color {
   }
 
 
-  Derived& value(float value, float alpha = 1.0) {
+  Derived& rgba(float value, float alpha = 1.0) {
     color.r = value;
     color.g = value;
     color.b = value;
