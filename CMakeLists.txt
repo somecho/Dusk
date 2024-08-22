@@ -12,8 +12,8 @@ set(${PROJECT_NAME}_INCLUDES
     ${PROJECT_NAME}/Drawer.hpp
     ${PROJECT_NAME}/Shader.hpp
     ${PROJECT_NAME}/Builder/Buffer.hpp
-    ${PROJECT_NAME}/Drawable/Interface.hpp
-    ${PROJECT_NAME}/Drawable/Rect.hpp
+    ${PROJECT_NAME}/Interface.hpp
+    ${PROJECT_NAME}/Drawables.hpp
 )
 
 target_sources(${PROJECT_NAME}
@@ -22,7 +22,6 @@ target_sources(${PROJECT_NAME}
         ${PROJECT_NAME}/App.cpp
         ${PROJECT_NAME}/Drawer.cpp
         ${PROJECT_NAME}/Shader.cpp
-        ${PROJECT_NAME}/Drawable/Rect.cpp
 )
 
 find_package(Dawn REQUIRED)

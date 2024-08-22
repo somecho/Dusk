@@ -20,6 +20,7 @@
 ### 0.1.0 
 - ✅ screensize setable
 - ✅ use 3D vertices 
+- no clear draw
 - orthographic projection
 - msaa 
 - 2D API

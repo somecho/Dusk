@@ -3,7 +3,7 @@
 #include <webgpu/webgpu_cpp.h>
 
 #include <Dusk/Builder/Buffer.hpp>
-#include <Dusk/Drawable/Rect.hpp>
+#include <Dusk/Drawables.hpp>
 #include <cstdint>
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/mat4x4.hpp>
@@ -32,6 +32,7 @@ class Drawer {
   void clear(Rgba color);
 
   Drawable::Rect& rect();
+  Drawable::Circle& circle();
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);
@@ -39,7 +40,8 @@ class Drawer {
  private:
   void flushData();
 
-  void processRect(Drawable::Rect & r, uint32_t startIndex);
+  void processRect(Drawable::Rect& r, uint32_t startIndex);
+  void processCircle(Drawable::Circle& c, uint32_t startIndex);
 
   template <typename T, wgpu::BufferUsage U>
   void syncBuffer(wgpu::Buffer& buffer, const std::vector<T>& data) {
@@ -68,7 +70,7 @@ class Drawer {
   std::vector<float> vertices;
   std::vector<float> colors;
   std::vector<uint32_t> indices;
-  std::vector<std::shared_ptr<std::variant<Drawable::Rect>>> drawables;
+  std::vector<std::shared_ptr<Drawable::Shape>> drawables;
 
   wgpu::Buffer vertexBuffer;
   wgpu::Buffer colorBuffer;

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
@@ -122,9 +123,6 @@ class Color {
     return static_cast<Derived&>(*this);
   }
 
-  glm::vec4 rgba() {
-    return color;
-  }
 
   Derived& value(float value, float alpha = 1.0) {
     color.r = value;
@@ -139,6 +137,10 @@ class Color {
     color.g = g;
     color.b = b;
     return static_cast<Derived&>(*this);
+  }
+
+  glm::vec4 rgba() {
+    return color;
   }
 
   glm::vec3 rgb() {
@@ -163,6 +165,38 @@ class Color {
 
  private:
   glm::vec4 color{1, 1, 1, 1};
+};
+
+template <typename Derived>
+class Radius {
+ public:
+  Derived& radius(float radius) {
+    m_radius = radius;
+    return static_cast<Derived&>(*this);
+  }
+
+  float radius() {
+    return m_radius;
+  }
+
+ private:
+  float m_radius;
+};
+
+template <typename Derived>
+class Resolution {
+ public:
+  Derived& res(uint32_t resolution) {
+    this->resolution = resolution;
+    return static_cast<Derived&>(*this);
+  }
+
+  uint32_t res() {
+    return resolution;
+  }
+
+ private:
+  uint32_t resolution = 90;
 };
 
 }  // namespace Interface

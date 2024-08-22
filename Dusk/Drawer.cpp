@@ -1,10 +1,13 @@
 #include <Dusk/Builder/Buffer.hpp>
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
+#include <cstdint>
+#include <iostream>
 #include <memory>
-#include <variant>
+#include <numbers>
+#include <tuple>
 
-#include "Dusk/Drawable/Rect.hpp"
+#include "Dusk/Drawables.hpp"
 
 namespace Dusk {
 
@@ -151,10 +154,17 @@ void Drawer::clear(Rgba color) {
 }
 
 Drawable::Rect& Drawer::rect() {
-  std::variant<Drawable::Rect> r = Drawable::Rect();
-  auto ptr = std::make_shared<std::variant<Drawable::Rect>>(r);
+  Drawable::Shape r = Drawable::Rect();
+  auto ptr = std::make_shared<Drawable::Shape>(r);
   drawables.push_back(ptr);
   return std::get<Drawable::Rect>(*ptr);
+}
+
+Drawable::Circle& Drawer::circle() {
+  Drawable::Shape r = Drawable::Circle();
+  auto ptr = std::make_shared<Drawable::Shape>(r);
+  drawables.push_back(ptr);
+  return std::get<Drawable::Circle>(*ptr);
 }
 
 void Drawer::draw() {
@@ -162,14 +172,16 @@ void Drawer::draw() {
   for (auto drawable : drawables) {
     if (std::holds_alternative<Drawable::Rect>(*drawable)) {
       processRect(std::get<Drawable::Rect>(*drawable), startIndex);
-
       startIndex += 4;
-      continue;
+    } else if (std::holds_alternative<Drawable::Circle>(*drawable)) {
+      auto c = std::get<Drawable::Circle>(*drawable);
+      processCircle(c, startIndex);
+      startIndex += c.res() + 1;
     }
   }
 
-  //
   wgpu::Queue queue = device.GetQueue();
+
   syncBuffer<float, wgpu::BufferUsage::Vertex>(vertexBuffer, vertices);
   syncBuffer<float, wgpu::BufferUsage::Vertex>(colorBuffer, colors);
   syncBuffer<uint32_t, wgpu::BufferUsage::Index>(indexBuffer, indices);
@@ -226,46 +238,60 @@ void Drawer::flushData() {
 }
 
 void Drawer::processRect(Drawable::Rect& r, uint32_t startIndex) {
+  // vertex 0
   vertices.push_back(r.x());
   vertices.push_back(r.y());
   vertices.push_back(r.z());
-  colors.push_back(r.r());
-  colors.push_back(r.g());
-  colors.push_back(r.b());
-  colors.push_back(r.a());
   // vertex 1
   vertices.push_back(r.x() + r.w());
   vertices.push_back(r.y());
   vertices.push_back(r.z());
-  colors.push_back(r.r());
-  colors.push_back(r.g());
-  colors.push_back(r.b());
-  colors.push_back(r.a());
   // vertex 2
   vertices.push_back(r.x() + r.w());
   vertices.push_back(r.y() + r.h());
   vertices.push_back(r.z());
-  colors.push_back(r.r());
-  colors.push_back(r.g());
-  colors.push_back(r.b());
-  colors.push_back(r.a());
   // vertex 3
   vertices.push_back(r.x());
   vertices.push_back(r.y() + r.h());
   vertices.push_back(r.z());
-  colors.push_back(r.r());
-  colors.push_back(r.g());
-  colors.push_back(r.b());
-  colors.push_back(r.a());
 
-  // tri 1
-  indices.push_back(startIndex);
-  indices.push_back(startIndex + 1);
-  indices.push_back(startIndex + 2);
-  // tri 2
-  indices.push_back(startIndex);
-  indices.push_back(startIndex + 2);
-  indices.push_back(startIndex + 3);
+  // 4 vertices
+  const std::vector<float> rgba = {r.r(), r.g(), r.b(), r.a()};
+  for (int i = 0; i < 4; i++) {
+    colors.insert(colors.end(), rgba.begin(), rgba.end());
+  }
+
+  indices.insert(indices.end(), {startIndex, startIndex + 1, startIndex + 2,
+                                 startIndex, startIndex + 2, startIndex + 3});
+}
+
+void Drawer::processCircle(Drawable::Circle& c, uint32_t startIndex) {
+  const float x = c.x();
+  const float y = c.y();
+  const float z = c.z();
+  const float r = c.r();
+  const float g = c.g();
+  const float b = c.b();
+  const float a = c.a();
+  const float radius = c.radius();
+  const uint32_t res = c.res();
+
+  vertices.insert(vertices.end(), {x, y, z});
+  for (uint32_t i = 0; i < res; i++) {
+    float id = static_cast<float>(i) / static_cast<float>(res);
+    float theta = id * std::numbers::pi_v<float> * 2.0;
+    vertices.insert(vertices.end(),
+                    {cosf(theta) * radius + x, sinf(theta) * radius + y, z});
+  }
+
+  for (uint32_t i = 0; i <= res; i++) {
+    colors.insert(colors.end(), {r, g, b, a});
+  }
+
+  for (uint32_t i = 0; i < res; i++) {
+    indices.insert(indices.end(), {startIndex, startIndex + i + 1,
+                                   startIndex + ((i + 2) % res) + 1});
+  }
 }
 
 }  // namespace Dusk
