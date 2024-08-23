@@ -17,6 +17,8 @@
     - bezier
 
 - move logging to own file
+- resize screen
+- on screen resize event
 
 ## ROADMAP
 
@@ -24,6 +26,7 @@
 - ✅ screensize setable
 - ✅ use 3D vertices 
 - no clear draw
+- onmouse event
 - ✅ msaa 
 - 2D API
     - ellipse 

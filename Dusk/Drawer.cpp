@@ -1,5 +1,7 @@
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
+#include <format>
+#include <iostream>
 #include <memory>
 #include <numbers>
 
@@ -173,6 +175,13 @@ Drawable::Circle& Drawer::circle() {
   return std::get<Drawable::Circle>(*ptr);
 }
 
+Drawable::Ellipse& Drawer::ellipse() {
+  Drawable::Shape e = Drawable::Ellipse();
+  auto ptr = std::make_shared<Drawable::Shape>(e);
+  drawables.push_back(ptr);
+  return std::get<Drawable::Ellipse>(*ptr);
+}
+
 void Drawer::draw() {
   uint32_t startIndex = 0;
   for (auto drawable : drawables) {
@@ -183,6 +192,10 @@ void Drawer::draw() {
       auto c = std::get<Drawable::Circle>(*drawable);
       processCircle(c, startIndex);
       startIndex += c.res() + 1;
+    } else if (std::holds_alternative<Drawable::Ellipse>(*drawable)) {
+      auto e = std::get<Drawable::Ellipse>(*drawable);
+      processEllipse(e, startIndex);
+      startIndex += e.res() + 1;
     }
   }
 
@@ -296,9 +309,42 @@ void Drawer::processCircle(Drawable::Circle& c, uint32_t startIndex) {
   }
 
   for (uint32_t i = 0; i < res; i++) {
-    indices.insert(indices.end(), {startIndex, startIndex + i + 1,
-                                   startIndex + ((i + 2) % res) + 1});
+    uint32_t i1 = startIndex;
+    uint32_t i2 = startIndex + i + 1;
+    uint32_t i3 = startIndex + (i + 1) % res + 1;
+    indices.insert(indices.end(), {i1, i2, i3});
   }
 }
 
+void Drawer::processEllipse(Drawable::Ellipse& e, uint32_t startIndex) {
+  const float x = e.x();
+  const float y = e.y();
+  const float z = e.z();
+  const float r = e.r();
+  const float g = e.g();
+  const float b = e.b();
+  const float a = e.a();
+  const float w = e.w();
+  const float h = e.h();
+  const uint32_t res = e.res();
+
+  vertices.insert(vertices.end(), {x, y, z});
+  for (uint32_t i = 0; i < res; i++) {
+    float id = static_cast<float>(i) / static_cast<float>(res);
+    float theta = id * std::numbers::pi_v<float> * 2.0;
+    vertices.insert(vertices.end(),
+                    {cosf(theta) * w + x, sinf(theta) * h + y, z});
+  }
+
+  for (uint32_t i = 0; i <= res; i++) {
+    colors.insert(colors.end(), {r, g, b, a});
+  }
+
+  for (uint32_t i = 0; i < res; i++) {
+    uint32_t i1 = startIndex;
+    uint32_t i2 = startIndex + i + 1;
+    uint32_t i3 = startIndex + (i + 1) % res + 1;
+    indices.insert(indices.end(), {i1, i2, i3});
+  }
+}
 }  // namespace Dusk

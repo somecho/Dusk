@@ -32,6 +32,7 @@ class Drawer {
 
   Drawable::Rect& rect();
   Drawable::Circle& circle();
+  Drawable::Ellipse& ellipse();
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);
@@ -41,6 +42,7 @@ class Drawer {
 
   void processRect(Drawable::Rect& r, uint32_t startIndex);
   void processCircle(Drawable::Circle& c, uint32_t startIndex);
+  void processEllipse(Drawable::Ellipse& e, uint32_t startIndex);
 
   template <typename T, wgpu::BufferUsage U>
   void syncBuffer(wgpu::Buffer& buffer, const std::vector<T>& data) {

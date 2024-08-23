@@ -15,7 +15,12 @@ class Circle : public Interface::Position<Circle>,
                public Interface::Resolution<Circle>,
                public Interface::Color<Circle> {};
 
-typedef std::variant<Rect, Circle> Shape;
+class Ellipse : public Interface::Position<Ellipse>,
+                public Interface::Dimensions<Ellipse>,
+                public Interface::Resolution<Ellipse>,
+                public Interface::Color<Ellipse> {};
+
+typedef std::variant<Rect, Circle, Ellipse> Shape;
 
 }  // namespace Drawable
 }  // namespace Dusk
