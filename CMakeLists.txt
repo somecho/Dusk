@@ -32,3 +32,6 @@ target_include_directories(${PROJECT_NAME}
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
         $<INSTALL_INTERFACE:include>
 )
+
+add_executable(many-circles Examples/many-circles.cpp)
+target_link_libraries(many-circles ${PROJECT_NAME})

@@ -9,6 +9,8 @@
 - move roadmap to own Markdown
 - custom texture targets
 
+- orthographic projection
+
 - 3D API
     - points
     - mesh
@@ -21,7 +23,6 @@
 - ✅ screensize setable
 - ✅ use 3D vertices 
 - no clear draw
-- orthographic projection
 - ✅ msaa 
 - 2D API
     - ellipse 
