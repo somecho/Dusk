@@ -30,9 +30,24 @@ class Drawer {
   void clear(float value, float alpha = 1.0);
   void clear(Rgba color);
 
+  template <typename T>
+  T& shape() {
+    if constexpr (!std::is_same_v<T, Drawable::Rect> &&
+                  !std::is_same_v<T, Drawable::Circle> &&
+                  !std::is_same_v<T, Drawable::Ellipse> &&
+                  !std::is_same_v<T, Drawable::Triangle>) {
+      static_assert(always_false<T>::value, "Unsupported type");
+    }
+    Drawable::Shape s = T();
+    auto ptr = std::make_shared<Drawable::Shape>(s);
+    drawables.push_back(ptr);
+    return std::get<T>(*ptr);
+  }
+
   Drawable::Rect& rect();
   Drawable::Circle& circle();
   Drawable::Ellipse& ellipse();
+  Drawable::Triangle& tri();
 
   void draw();
   void setTransformMatrix(glm::mat4 mat);
@@ -43,6 +58,7 @@ class Drawer {
   void processRect(Drawable::Rect& r, uint32_t startIndex);
   void processCircle(Drawable::Circle& c, uint32_t startIndex);
   void processEllipse(Drawable::Ellipse& e, uint32_t startIndex);
+  void processTriangle(Drawable::Triangle& t, uint32_t startIndex);
 
   template <typename T, wgpu::BufferUsage U>
   void syncBuffer(wgpu::Buffer& buffer, const std::vector<T>& data) {

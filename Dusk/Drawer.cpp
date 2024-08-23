@@ -1,9 +1,8 @@
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
-#include <format>
-#include <iostream>
-#include <memory>
 #include <numbers>
+
+#include "Dusk/Drawables.hpp"
 
 namespace Dusk {
 
@@ -162,24 +161,19 @@ void Drawer::clear(Rgba color) {
 }
 
 Drawable::Rect& Drawer::rect() {
-  Drawable::Shape r = Drawable::Rect();
-  auto ptr = std::make_shared<Drawable::Shape>(r);
-  drawables.push_back(ptr);
-  return std::get<Drawable::Rect>(*ptr);
+  return shape<Drawable::Rect>();
 }
 
 Drawable::Circle& Drawer::circle() {
-  Drawable::Shape r = Drawable::Circle();
-  auto ptr = std::make_shared<Drawable::Shape>(r);
-  drawables.push_back(ptr);
-  return std::get<Drawable::Circle>(*ptr);
+  return shape<Drawable::Circle>();
 }
 
 Drawable::Ellipse& Drawer::ellipse() {
-  Drawable::Shape e = Drawable::Ellipse();
-  auto ptr = std::make_shared<Drawable::Shape>(e);
-  drawables.push_back(ptr);
-  return std::get<Drawable::Ellipse>(*ptr);
+  return shape<Drawable::Ellipse>();
+}
+
+Drawable::Triangle& Drawer::tri() {
+  return shape<Drawable::Triangle>();
 }
 
 void Drawer::draw() {
@@ -196,6 +190,9 @@ void Drawer::draw() {
       auto e = std::get<Drawable::Ellipse>(*drawable);
       processEllipse(e, startIndex);
       startIndex += e.res() + 1;
+    } else if (std::holds_alternative<Drawable::Triangle>(*drawable)) {
+      processTriangle(std::get<Drawable::Triangle>(*drawable), startIndex);
+      startIndex += 3;
     }
   }
 
@@ -346,5 +343,19 @@ void Drawer::processEllipse(Drawable::Ellipse& e, uint32_t startIndex) {
     uint32_t i3 = startIndex + (i + 1) % res + 1;
     indices.insert(indices.end(), {i1, i2, i3});
   }
+}
+
+void Drawer::processTriangle(Drawable::Triangle& t, uint32_t startIndex) {
+  const auto [x1, y1, z1] = t.p1<Triplet>();
+  const auto [x2, y2, z2] = t.p2<Triplet>();
+  const auto [x3, y3, z3] = t.p3<Triplet>();
+  vertices.insert(vertices.end(), {x1, y1, z1});
+  vertices.insert(vertices.end(), {x2, y2, z2});
+  vertices.insert(vertices.end(), {x3, y3, z3});
+  const std::vector<float> rgba = {t.r(), t.g(), t.b(), t.a()};
+  for (int i = 0; i < 3; i++) {
+    colors.insert(colors.end(), rgba.begin(), rgba.end());
+  }
+  indices.insert(indices.end(), {startIndex, startIndex + 1, startIndex + 2});
 }
 }  // namespace Dusk

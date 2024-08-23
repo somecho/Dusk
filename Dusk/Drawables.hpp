@@ -20,7 +20,10 @@ class Ellipse : public Interface::Position<Ellipse>,
                 public Interface::Resolution<Ellipse>,
                 public Interface::Color<Ellipse> {};
 
-typedef std::variant<Rect, Circle, Ellipse> Shape;
+class Triangle : public Interface::Triangle<Triangle>,
+                 public Interface::Color<Triangle> {};
+
+typedef std::variant<Rect, Circle, Ellipse, Triangle> Shape;
 
 }  // namespace Drawable
 }  // namespace Dusk

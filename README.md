@@ -29,10 +29,10 @@
 - onmouse event
 - ✅ msaa 
 - 2D API
-    - ellipse 
-    - polygon
+    - ✅ ellipse 
     - ✅ circle
-    - triangle 
+    - ✅ triangle 
+    - line
 - ✅ background color
 - fps 
 - transformation API

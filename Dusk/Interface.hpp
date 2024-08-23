@@ -4,8 +4,15 @@
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
+#include <tuple>
+
+template <typename T>
+struct always_false : std::false_type {};
 
 namespace Dusk {
+
+typedef std::tuple<float, float, float> Triplet;
+
 namespace Drawable {
 namespace Interface {
 
@@ -123,7 +130,6 @@ class Color {
     return static_cast<Derived&>(*this);
   }
 
-
   Derived& rgba(float value, float alpha = 1.0) {
     color.r = value;
     color.g = value;
@@ -197,6 +203,84 @@ class Resolution {
 
  private:
   uint32_t resolution = 90;
+};
+template <typename Derived>
+class Triangle {
+ public:
+  Derived& p1(glm::vec2 pos) {
+    return p1(pos.x, pos.y);
+  }
+
+  Derived& p1(glm::vec3 pos) {
+    return p1(pos.x, pos.y, pos.z);
+  }
+
+  Derived& p1(float x, float y, float z = 0) {
+    v1.x = x;
+    v1.y = y;
+    v1.z = z;
+    return static_cast<Derived&>(*this);
+  }
+  Derived& p2(glm::vec2 pos) {
+    return p2(pos.x, pos.y);
+  }
+
+  Derived& p2(glm::vec3 pos) {
+    return p2(pos.x, pos.y, pos.z);
+  }
+
+  Derived& p2(float x, float y, float z = 0) {
+    v2.x = x;
+    v2.y = y;
+    v2.z = z;
+    return static_cast<Derived&>(*this);
+  }
+
+  Derived& p3(glm::vec2 pos) {
+    return p3(pos.x, pos.y);
+  }
+
+  Derived& p3(glm::vec3 pos) {
+    return p3(pos.x, pos.y, pos.z);
+  }
+
+  Derived& p3(float x, float y, float z = 0) {
+    v3.x = x;
+    v3.y = y;
+    v3.z = z;
+    return static_cast<Derived&>(*this);
+  }
+
+  template <typename T>
+  T p1() {
+    return getMember<T>(v1);
+  }
+
+  template <typename T>
+  T p2() {
+    return getMember<T>(v2);
+  }
+
+  template <typename T>
+  T p3() {
+    return getMember<T>(v3);
+  }
+
+ private:
+  glm::vec3 v1;
+  glm::vec3 v2;
+  glm::vec3 v3;
+
+  template <typename T>
+  T getMember(const glm::vec3& member) {
+    if constexpr (std::is_same_v<T, glm::vec3>) {
+      return member;
+    } else if constexpr (std::is_same_v<T, Triplet>) {
+      return Triplet{member.x, member.y, member.z};
+    } else {
+      static_assert(always_false<T>::value, "Unsupported type");
+    }
+  }
 };
 
 }  // namespace Interface
