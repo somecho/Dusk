@@ -1,8 +1,9 @@
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
+#include <glm/ext/matrix_transform.hpp>
+#include <glm/ext/vector_float4.hpp>
+#include <glm/geometric.hpp>
 #include <numbers>
-
-#include "Dusk/Drawables.hpp"
 
 namespace Dusk {
 
@@ -176,6 +177,10 @@ Drawable::Triangle& Drawer::tri() {
   return shape<Drawable::Triangle>();
 }
 
+Drawable::Line& Drawer::line() {
+  return shape<Drawable::Line>();
+}
+
 void Drawer::draw() {
   uint32_t startIndex = 0;
   for (auto drawable : drawables) {
@@ -193,6 +198,9 @@ void Drawer::draw() {
     } else if (std::holds_alternative<Drawable::Triangle>(*drawable)) {
       processTriangle(std::get<Drawable::Triangle>(*drawable), startIndex);
       startIndex += 3;
+    } else if (std::holds_alternative<Drawable::Line>(*drawable)) {
+      processLine(std::get<Drawable::Line>(*drawable), startIndex);
+      startIndex += 4;
     }
   }
 
@@ -358,4 +366,31 @@ void Drawer::processTriangle(Drawable::Triangle& t, uint32_t startIndex) {
   }
   indices.insert(indices.end(), {startIndex, startIndex + 1, startIndex + 2});
 }
+
+void Drawer::processLine(Drawable::Line& l, uint32_t startIndex) {
+  const auto p1 = l.p1<glm::vec3>();
+  const auto p2 = l.p2<glm::vec3>();
+  glm::vec3 dir = glm::normalize(p2 - p1) * glm::vec3(l.thickness() * 0.5f);
+  glm::vec3 bitan =
+      glm::rotate(glm::mat4(1), std::numbers::pi_v<float> * 0.5f, {0, 0, 1}) *
+      glm::vec4(dir, 1);
+
+  const auto px1 = p1 + bitan;
+  const auto px2 = p2 + bitan;
+  const auto px3 = p2 - bitan;
+  const auto px4 = p1 - bitan;
+  vertices.insert(vertices.end(), {px1.x, px1.y, px1.z});
+  vertices.insert(vertices.end(), {px2.x, px2.y, px2.z});
+  vertices.insert(vertices.end(), {px3.x, px3.y, px3.z});
+  vertices.insert(vertices.end(), {px4.x, px4.y, px4.z});
+
+  const std::vector<float> rgba = {l.r(), l.g(), l.b(), l.a()};
+  for (int i = 0; i < 4; i++) {
+    colors.insert(colors.end(), rgba.begin(), rgba.end());
+  }
+
+  indices.insert(indices.end(), {startIndex, startIndex + 1, startIndex + 2,
+                                 startIndex, startIndex + 2, startIndex + 3});
+}
+
 }  // namespace Dusk

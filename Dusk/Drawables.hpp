@@ -23,7 +23,11 @@ class Ellipse : public Interface::Position<Ellipse>,
 class Triangle : public Interface::Triangle<Triangle>,
                  public Interface::Color<Triangle> {};
 
-typedef std::variant<Rect, Circle, Ellipse, Triangle> Shape;
+class Line : public Interface::Line<Line>,
+             public Interface::Color<Line>,
+             public Interface::Thickness<Line> {};
+
+typedef std::variant<Rect, Circle, Ellipse, Triangle, Line> Shape;
 
 }  // namespace Drawable
 }  // namespace Dusk

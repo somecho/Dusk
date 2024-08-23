@@ -16,6 +16,20 @@ typedef std::tuple<float, float, float> Triplet;
 namespace Drawable {
 namespace Interface {
 
+class Gettable {
+ public:
+  template <typename T>
+  T getMember(const glm::vec3& member) {
+    if constexpr (std::is_same_v<T, glm::vec3>) {
+      return member;
+    } else if constexpr (std::is_same_v<T, Triplet>) {
+      return Triplet{member.x, member.y, member.z};
+    } else {
+      static_assert(always_false<T>::value, "Unsupported type");
+    }
+  }
+};
+
 template <typename Derived>
 class Position {
  public:
@@ -204,8 +218,9 @@ class Resolution {
  private:
   uint32_t resolution = 90;
 };
+
 template <typename Derived>
-class Triangle {
+class Triangle : public Gettable {
  public:
   Derived& p1(glm::vec2 pos) {
     return p1(pos.x, pos.y);
@@ -270,17 +285,69 @@ class Triangle {
   glm::vec3 v1;
   glm::vec3 v2;
   glm::vec3 v3;
+};
+
+template <typename Derived>
+class Line : public Gettable {
+ public:
+  Derived& p1(glm::vec2 pos) {
+    return p1(pos.x, pos.y);
+  }
+
+  Derived& p1(glm::vec3 pos) {
+    return p1(pos.x, pos.y, pos.z);
+  }
+
+  Derived& p1(float x, float y, float z = 0) {
+    v1.x = x;
+    v1.y = y;
+    v1.z = z;
+    return static_cast<Derived&>(*this);
+  }
+  Derived& p2(glm::vec2 pos) {
+    return p2(pos.x, pos.y);
+  }
+
+  Derived& p2(glm::vec3 pos) {
+    return p2(pos.x, pos.y, pos.z);
+  }
+
+  Derived& p2(float x, float y, float z = 0) {
+    v2.x = x;
+    v2.y = y;
+    v2.z = z;
+    return static_cast<Derived&>(*this);
+  }
 
   template <typename T>
-  T getMember(const glm::vec3& member) {
-    if constexpr (std::is_same_v<T, glm::vec3>) {
-      return member;
-    } else if constexpr (std::is_same_v<T, Triplet>) {
-      return Triplet{member.x, member.y, member.z};
-    } else {
-      static_assert(always_false<T>::value, "Unsupported type");
-    }
+  T p1() {
+    return getMember<T>(v1);
   }
+
+  template <typename T>
+  T p2() {
+    return getMember<T>(v2);
+  }
+
+ private:
+  glm::vec3 v1;
+  glm::vec3 v2;
+};
+
+template <typename Derived>
+class Thickness {
+ public:
+  Derived& thickness(float t) {
+    this->t = t;
+    return static_cast<Derived&>(*this);
+  }
+
+  float thickness() {
+    return t;
+  }
+
+ private:
+  float t;
 };
 
 }  // namespace Interface
