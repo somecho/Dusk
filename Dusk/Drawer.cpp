@@ -1,13 +1,7 @@
-#include <Dusk/Builder/Buffer.hpp>
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
-#include <cstdint>
-#include <iostream>
 #include <memory>
 #include <numbers>
-#include <tuple>
-
-#include "Dusk/Drawables.hpp"
 
 namespace Dusk {
 

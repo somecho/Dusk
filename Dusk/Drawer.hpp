@@ -8,7 +8,6 @@
 #include <glm/ext/matrix_float4x4.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec2.hpp>
-#include <variant>
 #include <vector>
 
 namespace Dusk {

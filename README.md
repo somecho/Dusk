@@ -5,7 +5,6 @@
 - refactor Drawer init
 - pipeline builder
 - renderpass builder
-- nannou style api?
 - move roadmap to own Markdown
 - custom texture targets
 
@@ -16,6 +15,8 @@
     - mesh
     - polyline
     - bezier
+
+- move logging to own file
 
 ## ROADMAP
 
