@@ -77,7 +77,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
   pipelineDesc.primitive.cullMode = wgpu::CullMode::None;
 
   wgpu::ColorTargetState colTarget;
-  colTarget.format = format;
+  colTarget.format = this->format;
   wgpu::FragmentState frag;
   frag.module = shader.mod;
   frag.entryPoint = "fs_main";
@@ -88,7 +88,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
   wgpu::TextureDescriptor texDesc{};
   texDesc.usage = wgpu::TextureUsage::RenderAttachment;
   texDesc.sampleCount = 4;
-  texDesc.format = format;
+  texDesc.format = this->format;
   wgpu::SurfaceTexture st;
   surface.GetCurrentTexture(&st);
   texDesc.size.width = st.texture.GetWidth();
