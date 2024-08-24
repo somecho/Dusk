@@ -19,6 +19,7 @@
 - move logging to own file
 - resize screen
 - on screen resize event
+- ✅ add virtual destructors to all INTERFACES
 
 ## ROADMAP
 
@@ -28,11 +29,11 @@
 - no clear draw
 - onmouse event
 - ✅ msaa 
-- 2D API
+- ✅ 2D API
     - ✅ ellipse 
     - ✅ circle
     - ✅ triangle 
-    - line
+    - ✅ line
 - ✅ background color
 - fps 
 - transformation API

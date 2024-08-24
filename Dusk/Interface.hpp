@@ -18,6 +18,8 @@ namespace Interface {
 
 class Gettable {
  public:
+  virtual ~Gettable() = default;
+
   template <typename T>
   T getMember(const glm::vec3& member) {
     if constexpr (std::is_same_v<T, glm::vec3>) {
@@ -33,6 +35,8 @@ class Gettable {
 template <typename Derived>
 class Position {
  public:
+  virtual ~Position<Derived>() = default;
+
   Derived& xyz(float x, float y, float z) {
     pos.x = x;
     pos.y = y;
@@ -94,6 +98,8 @@ class Position {
 template <typename Derived>
 class Dimensions {
  public:
+  virtual ~Dimensions<Derived>() = default;
+
   Derived& w(float width) {
     this->width = width;
     return static_cast<Derived&>(*this);
@@ -136,6 +142,8 @@ class Dimensions {
 template <typename Derived>
 class Color {
  public:
+  virtual ~Color<Derived>() = default;
+
   Derived& rgba(float r, float g, float b, float a = 1.0) {
     color.r = r;
     color.g = g;
@@ -190,6 +198,8 @@ class Color {
 template <typename Derived>
 class Radius {
  public:
+  virtual ~Radius<Derived>() = default;
+
   Derived& radius(float radius) {
     m_radius = radius;
     return static_cast<Derived&>(*this);
@@ -206,6 +216,8 @@ class Radius {
 template <typename Derived>
 class Resolution {
  public:
+  virtual ~Resolution<Derived>() = default;
+
   Derived& res(uint32_t resolution) {
     this->resolution = resolution;
     return static_cast<Derived&>(*this);
@@ -222,6 +234,8 @@ class Resolution {
 template <typename Derived>
 class Triangle : public Gettable {
  public:
+  virtual ~Triangle<Derived>() = default;
+
   Derived& p1(glm::vec2 pos) {
     return p1(pos.x, pos.y);
   }
@@ -290,6 +304,8 @@ class Triangle : public Gettable {
 template <typename Derived>
 class Line : public Gettable {
  public:
+  virtual ~Line<Derived>() = default;
+
   Derived& p1(glm::vec2 pos) {
     return p1(pos.x, pos.y);
   }
@@ -337,6 +353,8 @@ class Line : public Gettable {
 template <typename Derived>
 class Thickness {
  public:
+  virtual ~Thickness<Derived>() = default;
+
   Derived& thickness(float t) {
     this->t = t;
     return static_cast<Derived&>(*this);
