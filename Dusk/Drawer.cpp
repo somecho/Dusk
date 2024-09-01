@@ -158,6 +158,7 @@ void Drawer::clear(float value, float alpha) {
 };
 
 void Drawer::clear(Rgba color) {
+  loadOp = wgpu::LoadOp::Clear;
   m_clearColor = color;
 }
 
@@ -221,7 +222,7 @@ void Drawer::draw() {
   wgpu::RenderPassColorAttachment attachment{};
   attachment.view = tex.CreateView();
   attachment.resolveTarget = view;
-  attachment.loadOp = wgpu::LoadOp::Clear;
+  attachment.loadOp = loadOp;
   attachment.storeOp = wgpu::StoreOp::Store;
   attachment.clearValue = wgpu::Color{m_clearColor.r, m_clearColor.g,
                                       m_clearColor.b, m_clearColor.a};
@@ -242,6 +243,7 @@ void Drawer::draw() {
   wgpu::CommandBuffer commands = encoder.Finish();
   queue.Submit(1, &commands);
   flushData();
+  loadOp = wgpu::LoadOp::Load;
 };
 
 void Drawer::setTransformMatrix(glm::mat4 mat) {

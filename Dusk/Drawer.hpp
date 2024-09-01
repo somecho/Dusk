@@ -100,6 +100,7 @@ class Drawer {
   wgpu::BindGroup bindGroup;
 
   Rgba m_clearColor = {0.0, 0.0, 0.0, 0.0};
+  wgpu::LoadOp loadOp = wgpu::LoadOp::Load;
 };
 
 }  // namespace Dusk
