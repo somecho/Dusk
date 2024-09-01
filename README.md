@@ -34,7 +34,7 @@
     - ✅ triangle 
     - ✅ line
 - ✅ background color
-- fps 
+- ✅ fps 
 - orthographic projection
 - transformation API
 - screenshot function

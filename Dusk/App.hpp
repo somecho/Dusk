@@ -45,6 +45,14 @@ class App {
     return {width * 0.5, height * 0.5};
   }
 
+  inline int getFrameNum() {
+    return frameNum;
+  }
+
+  inline double getFps() {
+    return fps;
+  }
+
  protected:
   wgpu::Instance instance;
   wgpu::Surface surface;
@@ -57,6 +65,8 @@ class App {
   int width = 1280;
   int height = 720;
   uint64_t frameNum = 0;
+  double prevTime = 0;
+  double fps = 0;
   int glfwInitialized = false;
   GLFWwindow* window;
   std::thread updateThread;

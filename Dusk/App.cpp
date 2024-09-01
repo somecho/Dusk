@@ -132,6 +132,10 @@ void App::run() {
     draw();
     surface.Present();
     frameNum++;
+    double currTime = glfwGetTime();
+    double deltaTime = currTime - prevTime;
+    fps = 1.0 / deltaTime;
+    prevTime = currTime;
   }
 }
 
