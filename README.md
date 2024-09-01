@@ -35,7 +35,7 @@
     - ✅ line
 - ✅ background color
 - ✅ fps 
-- orthographic projection
+- ✅ orthographic projection
 - transformation API
 - screenshot function
 - documentation

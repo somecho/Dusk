@@ -1,5 +1,6 @@
 #include <Dusk/Drawer.hpp>
 #include <Dusk/Shader.hpp>
+#include <glm/ext/matrix_clip_space.hpp>
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/ext/vector_float4.hpp>
 #include <glm/geometric.hpp>
@@ -10,8 +11,14 @@ namespace Dusk {
 Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
                wgpu::TextureFormat format)
     : device(device), surface(surface), format(format) {
+  wgpu::SurfaceTexture surfTex;
+  surface.GetCurrentTexture(&surfTex);
+
+  glm::mat4 ortho = glm::ortho<float>(0, surfTex.texture.GetWidth(),
+                                      surfTex.texture.GetHeight(), 0, -1, 1);
+
   transformBuffer = Dusk::Builder::Buffer<float, wgpu::BufferUsage::Uniform>()
-                        .data(glm::mat4(1.0))
+                        .data(ortho)
                         .addUsage(wgpu::BufferUsage::CopyDst)
                         .build(device);
 
@@ -46,7 +53,7 @@ Drawer::Drawer(wgpu::Device& device, wgpu::Surface& surface,
 
   wgpu::VertexAttribute positionAttrib;
   positionAttrib.shaderLocation = 0;
-  positionAttrib.format = wgpu::VertexFormat::Float32x2;
+  positionAttrib.format = wgpu::VertexFormat::Float32x3;
   positionAttrib.offset = 0;
 
   wgpu::VertexAttribute colorAttrib;
