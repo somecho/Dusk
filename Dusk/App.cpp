@@ -64,10 +64,35 @@ void App::run() {
       window, [](GLFWwindow *window, int key, [[maybe_unused]] int scancode,
                  int action, [[maybe_unused]] int mods) {
         if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE) {
-          glfwSetWindowShouldClose(window, 1);
+          if (key == GLFW_KEY_ESCAPE) {
+            glfwSetWindowShouldClose(window, 1);
+          }
+          appInstance->onKeyPressed(key, action);
         }
-        appInstance->onKeypressed(key, action);
       });
+
+  glfwSetCursorPosCallback(window, []([[maybe_unused]] GLFWwindow *window,
+                                      double xpos, double ypos) {
+    appInstance->onMouseMoved(xpos, ypos);
+    if (appInstance->mousePressed) {
+      appInstance->onMouseDragged(xpos, ypos);
+    }
+  });
+
+  glfwSetMouseButtonCallback(window, [](GLFWwindow *window, int button,
+                                        int action, [[maybe_unused]] int mods) {
+    double x = 0;
+    double y = 0;
+    glfwGetCursorPos(window, &x, &y);
+    if (action == GLFW_PRESS) {
+      appInstance->onMousePressed(x, y, button);
+      appInstance->mousePressed = true;
+    }
+    if (action == GLFW_RELEASE) {
+      appInstance->onMouseReleased(x, y, button);
+      appInstance->mousePressed = false;
+    }
+  });
 
   createSurface();
   requestAdapter();

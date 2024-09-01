@@ -17,8 +17,22 @@ class App {
   void run(int width, int height);
   void run();
 
-  virtual void onKeypressed([[maybe_unused]] int key,
+  virtual void onKeyPressed([[maybe_unused]] int key,
                             [[maybe_unused]] int action) {};
+
+  virtual void onMouseMoved([[maybe_unused]] double mouseX,
+                            [[maybe_unused]] double mouseY) {};
+
+  virtual void onMousePressed([[maybe_unused]] double mouseX,
+                              [[maybe_unused]] double mouseY,
+                              [[maybe_unused]] int button) {};
+
+  virtual void onMouseReleased([[maybe_unused]] double mouseX,
+                               [[maybe_unused]] double mouseY,
+                               [[maybe_unused]] int button) {};
+
+  virtual void onMouseDragged([[maybe_unused]] double mouseX,
+                              [[maybe_unused]] double mouseY) {};
 
   inline int getWidth() {
     return width;
@@ -57,6 +71,8 @@ class App {
   virtual void setup() {};
   virtual void update() {};
   virtual void draw() {};
+
+  bool mousePressed = false;
 };
 
 }  // namespace Dusk

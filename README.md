@@ -8,7 +8,6 @@
 - move roadmap to own Markdown
 - custom texture targets
 
-- orthographic projection
 
 - 3D API
     - points
@@ -26,8 +25,8 @@
 ### 0.1.0 
 - ✅ screensize setable
 - ✅ use 3D vertices 
-- no clear draw
-- onmouse event
+- ✅ no clear draw
+- ✅ mouse events
 - ✅ msaa 
 - ✅ 2D API
     - ✅ ellipse 
@@ -36,6 +35,7 @@
     - ✅ line
 - ✅ background color
 - fps 
+- orthographic projection
 - transformation API
 - screenshot function
 - documentation
