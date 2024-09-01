@@ -17,8 +17,7 @@ class App {
   void run(int width, int height);
   void run();
 
-  virtual void onKeyPressed([[maybe_unused]] int key,
-                            [[maybe_unused]] int action) {};
+  virtual void onKeyPressed([[maybe_unused]] int key) {};
 
   virtual void onMouseMoved([[maybe_unused]] double mouseX,
                             [[maybe_unused]] double mouseY) {};

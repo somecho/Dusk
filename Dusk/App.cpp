@@ -63,11 +63,11 @@ void App::run() {
   glfwSetKeyCallback(
       window, [](GLFWwindow *window, int key, [[maybe_unused]] int scancode,
                  int action, [[maybe_unused]] int mods) {
-        if (action == GLFW_PRESS && key == GLFW_KEY_ESCAPE) {
+        if (action == GLFW_PRESS) {
           if (key == GLFW_KEY_ESCAPE) {
             glfwSetWindowShouldClose(window, 1);
           }
-          appInstance->onKeyPressed(key, action);
+          appInstance->onKeyPressed(key);
         }
       });
 

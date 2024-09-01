@@ -35,3 +35,6 @@ target_include_directories(${PROJECT_NAME}
 
 add_executable(many-circles Examples/many-circles.cpp)
 target_link_libraries(many-circles ${PROJECT_NAME})
+
+add_executable(user-input Examples/user-input.cpp)
+target_link_libraries(user-input ${PROJECT_NAME})
