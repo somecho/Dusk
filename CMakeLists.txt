@@ -1,5 +1,8 @@
-cmake_minimum_required(VERSION 3.15)
+cmake_minimum_required(VERSION 3.28)
 project(Dusk VERSION 0.0.11)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+include(cmake/FindDependencies.cmake)
 
 add_library(${PROJECT_NAME})
 
@@ -24,7 +27,7 @@ target_sources(${PROJECT_NAME}
         ${PROJECT_NAME}/Shader.cpp
 )
 
-find_package(Dawn REQUIRED)
+
 target_link_libraries(${PROJECT_NAME} PUBLIC dawn::webgpu_dawn glfw glm)
 
 target_include_directories(${PROJECT_NAME}
