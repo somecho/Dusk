@@ -1,43 +1,32 @@
-cmake_minimum_required(VERSION 3.28)
+cmake_minimum_required(VERSION 3.30)
+
 project(Dusk VERSION 0.0.11)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 include(cmake/FindDependencies.cmake)
 
 add_library(${PROJECT_NAME})
+add_library(Dusk::Dusk ALIAS ${PROJECT_NAME})
 
-target_compile_options(${PROJECT_NAME} PRIVATE -Wall -Wextra -pedantic)
-target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_23)
-target_compile_definitions(${PROJECT_NAME} PRIVATE RESOURCE_DIR="${CMAKE_CURRENT_SOURCE_DIR}/resources")
-
-set(${PROJECT_NAME}_INCLUDES
-    ${PROJECT_NAME}/App.hpp
-    ${PROJECT_NAME}/Drawer.hpp
-    ${PROJECT_NAME}/Shader.hpp
-    ${PROJECT_NAME}/Builder/Buffer.hpp
-    ${PROJECT_NAME}/Interface.hpp
-    ${PROJECT_NAME}/Drawables.hpp
-)
+set_target_properties(
+  ${PROJECT_NAME}
+  PROPERTIES CXX_STANDARD 23
+             CXX_STANDARD_REQUIRED ON
+             CXX_SCAN_FOR_MODULES ON
+	     CXX_MODULE_STD ON
+             COMPILE_OPTIONS
+             "-Wall;-Wextra;-Wshadow;-Wpedantic;-Wsign-conversion;-Wconversion")
 
 target_sources(${PROJECT_NAME}
-    PRIVATE
-        ${${PROJECT_NAME}_INCLUDES}
-        ${PROJECT_NAME}/App.cpp
-        ${PROJECT_NAME}/Drawer.cpp
-        ${PROJECT_NAME}/Shader.cpp
+  PUBLIC
+  FILE_SET CXX_MODULES
+  BASE_DIRS ${CMAKE_CURRENT_LIST_DIR}
+  FILES
+    Dusk/Window.cpp
+    Dusk/Log.cpp
 )
-
 
 target_link_libraries(${PROJECT_NAME} PUBLIC dawn::webgpu_dawn glfw glm)
 
-target_include_directories(${PROJECT_NAME}
-    PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
-        $<INSTALL_INTERFACE:include>
-)
-
-add_executable(many-circles Examples/many-circles.cpp)
-target_link_libraries(many-circles ${PROJECT_NAME})
-
-add_executable(user-input Examples/user-input.cpp)
-target_link_libraries(user-input ${PROJECT_NAME})
+target_link_options(${PROJECT_NAME} PRIVATE -stdlib=libc++)
