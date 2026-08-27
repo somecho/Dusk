@@ -23,6 +23,7 @@ target_sources(${PROJECT_NAME}
   FILE_SET CXX_MODULES
   BASE_DIRS ${CMAKE_CURRENT_LIST_DIR}
   FILES
+    Dusk/glfw.cpp
     Dusk/Window.cpp
     Dusk/WindowBuilder.cpp
     Dusk/wf.cpp

@@ -4,7 +4,8 @@ module;
 
 export module Dusk.wf;
 
-export import Dusk.WindowBuilder;
+export import :WindowBuilder;
+export import :glfw;
 
 namespace Dusk {
 
@@ -34,6 +35,10 @@ export class wf {
 
   static auto Window() -> Dusk::WindowBuilder {
     return Dusk::WindowBuilder();
+  }
+
+  static auto pollEvents() -> void {
+    glfwPollEvents();
   }
 };
 

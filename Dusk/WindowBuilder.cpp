@@ -2,11 +2,11 @@ module;
 
 #include <GLFW/glfw3.h>
 
-export module Dusk.WindowBuilder;
+export module Dusk.wf:WindowBuilder;
 
 import std;
 
-export import Dusk.Window;
+export import :Window;
 
 namespace Dusk {
 
