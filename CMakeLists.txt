@@ -24,7 +24,8 @@ target_sources(${PROJECT_NAME}
   BASE_DIRS ${CMAKE_CURRENT_LIST_DIR}
   FILES
     Dusk/Window.cpp
-    Dusk/Log.cpp
+    Dusk/WindowBuilder.cpp
+    Dusk/wf.cpp
 )
 
 target_link_libraries(${PROJECT_NAME} PUBLIC dawn::webgpu_dawn glfw glm)
