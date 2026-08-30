@@ -18,9 +18,11 @@ export class System {
   ~System() {
     glfwTerminate();
   }
+
   auto window() -> WindowBuilder {
     return WindowBuilder();
   }
+
   auto pollEvents() -> void {
     glfwPollEvents();
   }

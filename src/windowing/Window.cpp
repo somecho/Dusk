@@ -51,4 +51,4 @@ export class Window {
   int _width, _height;
 };
 
-}  // namespace Dusk
+}  // namespace Dusk::windowing

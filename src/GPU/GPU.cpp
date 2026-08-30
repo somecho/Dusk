@@ -1,3 +1,4 @@
 export module Dusk.GPU;
 
-export import :glfw;
+export import :surface;
+export import :RenderPipelineBuilder;

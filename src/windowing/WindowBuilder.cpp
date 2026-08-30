@@ -8,7 +8,6 @@ export import :Window;
 
 import std;
 
-
 namespace Dusk::windowing {
 
 export class WindowBuilder {
@@ -46,4 +45,4 @@ export class WindowBuilder {
   }
 };
 
-}  // namespace Dusk
+}  // namespace Dusk::windowing
