@@ -2,11 +2,11 @@ module;
 
 #include <GLFW/glfw3.h>
 
-export module Dusk.wf:Window;
+export module Dusk.windowing:Window;
 
 import std;
 
-namespace Dusk {
+namespace Dusk::windowing {
 
 struct GLFWwindowDeleter {
   void operator()(GLFWwindow* window) const {

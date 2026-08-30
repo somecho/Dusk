@@ -1,23 +1,14 @@
-/**
-
-   Refer to:
-https://dawn.googlesource.com/dawn/+/0bdfde1457030635c7295d7ad6ea1440756564ef/src/dawn/glfw/utils.cpp
-
- */
-
 module;
 
 #include <webgpu/webgpu_cpp.h>
 
 #include "GLFW/glfw3.h"
-
 #define GLFW_EXPOSE_NATIVE_X11
-
 #include "GLFW/glfw3native.h"
 
-export module Dusk.wf:glfw;
+export module Dusk.GPU:glfw;
 
-namespace Dusk::glfw {
+namespace Dusk::GPU {
 
 using UniqueChainedStruct =
     std::unique_ptr<wgpu::ChainedStruct, void (*)(wgpu::ChainedStruct*)>;
@@ -37,4 +28,4 @@ export auto CreateSurfaceForWindow(const wgpu::Instance& instance,
   return surface;
 }
 
-}  // namespace Dusk::glfw
+}  // namespace Dusk::GPU

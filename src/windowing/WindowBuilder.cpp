@@ -2,13 +2,14 @@ module;
 
 #include <GLFW/glfw3.h>
 
-export module Dusk.wf:WindowBuilder;
-
-import std;
+export module Dusk.windowing:WindowBuilder;
 
 export import :Window;
 
-namespace Dusk {
+import std;
+
+
+namespace Dusk::windowing {
 
 export class WindowBuilder {
  private:
@@ -33,7 +34,7 @@ export class WindowBuilder {
     return *this;
   }
 
-  auto create() -> std::optional<Dusk::Window> {
+  auto create() -> std::optional<Window> {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
     auto window =
         glfwCreateWindow(_width, _height, _title.c_str(),
@@ -41,7 +42,7 @@ export class WindowBuilder {
     if (!window) {
       return {};
     }
-    return Dusk::Window(UniqueGLFWwindow(window));
+    return Window(UniqueGLFWwindow(window));
   }
 };
 
