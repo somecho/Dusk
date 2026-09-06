@@ -50,6 +50,12 @@ export class Window {
 
   /**
    * Assigns a callback to an event fired in the current window.
+   *
+   * EventCallback signature should match event.
+   *
+   * Event-Signature mappings:
+   * - MouseDown - MouseButtonCallback
+   * - MouseUp - MouseButtonCallback
    */
   auto setEventCallback(Event event, EventCallback callback) -> void {
     switch (event) {
