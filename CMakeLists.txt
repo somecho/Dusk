@@ -19,7 +19,7 @@ add_library(Dusk::glfw ALIAS dusk_glfw)
 add_library(dusk_dawn INTERFACE)
 if(EMSCRIPTEN)
   target_link_libraries(dusk_dawn INTERFACE emdawnwebgpu_cpp)
-  target_link_options(dusk_dawn INTERFACE "-sASYNCIFY=1")
+  target_link_options(dusk_dawn INTERFACE "-sASYNCIFY")
 else()
   target_link_libraries(dusk_dawn INTERFACE dawn::webgpu_dawn)
 endif()
@@ -42,7 +42,11 @@ target_sources(dusk_windowing PUBLIC
     src/windowing/windowing.cpp
     src/windowing/System.cpp
     src/windowing/Window.cpp
-    src/windowing/WindowBuilder.cpp)
+    src/windowing/WindowBuilder.cpp
+    src/windowing/events.cpp
+    src/windowing/Event.cpp
+    src/windowing/callbacks.cpp
+  )
 
 target_link_libraries(dusk_windowing PUBLIC Dusk::glfw)
 target_link_options(dusk_windowing PRIVATE -stdlib=libc++)
@@ -55,6 +59,7 @@ target_sources(dusk_GPU PUBLIC
   BASE_DIRS ${CMAKE_CURRENT_LIST_DIR}
   FILES
     src/GPU/GPU.cpp
+    src/GPU/IAD.cpp
     src/GPU/surface.cpp
     src/GPU/RenderPipelineBuilder.cpp)
 target_link_libraries(dusk_GPU PUBLIC Dusk::dawn Dusk::glfw)

@@ -5,6 +5,7 @@ module;
 export module Dusk.windowing:Window;
 
 import std;
+import :events;
 
 namespace Dusk::windowing {
 
@@ -22,6 +23,7 @@ export class Window {
  public:
   explicit Window(UniqueGLFWwindow window) : _window(std::move(window)) {
     glfwGetWindowSize(_window.get(), &_width, &_height);
+    EventDispatch::init(_window.get());
   };
   Window(const Window&) = delete;
   Window& operator=(const Window&) = delete;
@@ -44,6 +46,24 @@ export class Window {
   }
   auto height() -> int {
     return _height;
+  }
+
+  /**
+   * Assigns a callback to an event fired in the current window.
+   */
+  auto setEventCallback(Event event, EventCallback callback) -> void {
+    switch (event) {
+      case Event::MouseDown:
+        setMouseDownCallback(_window.get(),
+                             std::get<MouseButtonCallback>(callback));
+        break;
+      case Event::MouseUp:
+        setMouseUpCallback(_window.get(),
+                           std::get<MouseButtonCallback>(callback));
+        break;
+      default:
+        std::unreachable();
+    }
   }
 
  private:
