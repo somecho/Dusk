@@ -62,7 +62,7 @@ target_sources(dusk_GPU PUBLIC
     src/GPU/IAD.cpp
     src/GPU/surface.cpp
     src/GPU/RenderPipelineBuilder.cpp
-    src/GPU/Simple2DIndexedRenderPipeline.cpp
+    src/GPU/RendererShape2D.cpp
 )
 target_link_libraries(dusk_GPU PUBLIC Dusk::dawn Dusk::glfw glm::glm)
 target_link_options(dusk_GPU PRIVATE -stdlib=libc++)
