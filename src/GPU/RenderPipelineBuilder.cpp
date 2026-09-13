@@ -34,6 +34,13 @@ export class RenderPipelineBuilder {
     return *this;
   }
 
+  auto bindGroupLayouts(const wgpu::BindGroupLayout* layouts)
+      -> RenderPipelineBuilder& {
+    _layoutDesc.bindGroupLayoutCount = 1;
+    _layoutDesc.bindGroupLayouts = layouts;
+    return *this;
+  }
+
   auto colorTargets(size_t numTargets) -> RenderPipelineBuilder& {
     _colorTargets.assign(numTargets, wgpu::ColorTargetState());
     _fragmentState.targetCount = numTargets;
@@ -57,6 +64,12 @@ export class RenderPipelineBuilder {
     if (_hasFragmentState) {
       _desc.fragment = &_fragmentState;
     }
+    _desc.multisample.count = 4;
+    _desc.multisample.alphaToCoverageEnabled = false;
+    _desc.multisample.mask = ~0u;
+    if (_layoutDesc.bindGroupLayouts) {
+      _desc.layout = device.CreatePipelineLayout(&_layoutDesc);
+    }
     return device.CreateRenderPipeline(&_desc);
   }
 
@@ -64,6 +77,7 @@ export class RenderPipelineBuilder {
   bool _hasFragmentState = true;
   wgpu::FragmentState _fragmentState = {};
   std::vector<wgpu::ColorTargetState> _colorTargets;
+  wgpu::PipelineLayoutDescriptor _layoutDesc{};
   wgpu::RenderPipelineDescriptor _desc;
 };
 }  // namespace Dusk::GPU

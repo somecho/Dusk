@@ -61,10 +61,25 @@ target_sources(dusk_GPU PUBLIC
     src/GPU/GPU.cpp
     src/GPU/IAD.cpp
     src/GPU/surface.cpp
-    src/GPU/RenderPipelineBuilder.cpp)
-target_link_libraries(dusk_GPU PUBLIC Dusk::dawn Dusk::glfw)
+    src/GPU/RenderPipelineBuilder.cpp
+    src/GPU/Simple2DIndexedRenderPipeline.cpp
+)
+target_link_libraries(dusk_GPU PUBLIC Dusk::dawn Dusk::glfw glm::glm)
 target_link_options(dusk_GPU PRIVATE -stdlib=libc++)
+
+add_library(dusk_geom)
+add_library(Dusk::Geom ALIAS dusk_geom)
+set_target_properties(dusk_geom PROPERTIES ${DUSK_PROPERTIES})
+target_sources(dusk_geom PUBLIC
+  FILE_SET CXX_MODULES
+  BASE_DIRS ${CMAKE_CURRENT_LIST_DIR}
+  FILES
+  src/geom/geom.cpp
+  src/geom/circle.cpp
+)
+target_link_options(dusk_geom PRIVATE -stdlib=libc++)
+
 
 add_library(dusk INTERFACE)
 add_library(Dusk::Dusk ALIAS dusk)
-target_link_libraries(dusk INTERFACE Dusk::Windowing Dusk::GPU)
+target_link_libraries(dusk INTERFACE Dusk::Windowing Dusk::GPU Dusk::Geom)
