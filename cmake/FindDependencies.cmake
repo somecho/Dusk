@@ -41,3 +41,5 @@ if(NOT Dawn_FOUND)
 else()
   message(STATUS "Find Dawn: found")
 endif()
+
+find_package(glm REQUIRED)
