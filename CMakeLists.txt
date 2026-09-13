@@ -76,6 +76,7 @@ target_sources(dusk_geom PUBLIC
   FILES
   src/geom/geom.cpp
   src/geom/circle.cpp
+  src/geom/Shape.cpp
 )
 target_link_options(dusk_geom PRIVATE -stdlib=libc++)
 

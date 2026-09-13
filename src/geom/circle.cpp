@@ -1,6 +1,7 @@
 export module Dusk.geom:circle;
 
 import std;
+import :Shape;
 
 namespace Dusk::geom {
 
@@ -31,13 +32,6 @@ auto populate_tables(std::size_t num_vals) -> void {
 
 namespace Dusk::geom::circle {
 
-export typedef struct Desc {
-  float x = 0.f;
-  float y = 0.f;
-  float r = 1.f;
-  std::uint16_t resolution = CIRCLE_RESOLUTION;
-} Desc;
-
 /**
  * @returns A 1D vector containing interleaved 2D coordinates of a
  * circle. The size of this vector is `(resolution + 1) * 2`. The
@@ -65,22 +59,29 @@ export auto indexed_vertices(float x = 0.f, float y = 0.f, float r = 1.f,
   return vtx;
 }
 
-export auto indexed_vertices(const Desc& desc = {}) -> std::vector<float> {
-  return indexed_vertices(desc.x, desc.y, desc.r, desc.resolution);
-}
-
+/**
+ * @returns Indices used to draw circles.
+ */
 export auto indices(std::uint16_t resolution = CIRCLE_RESOLUTION)
     -> std::vector<std::uint32_t> {
-  static std::vector<std::uint32_t> indices;
-  if (indices.size() != resolution * 3) {
-    indices.resize(resolution * 3);
-  }
+  std::vector<std::uint32_t> indices;
+  indices.reserve(resolution * 3);
   for (std::size_t i = 0; i < resolution; i++) {
-    indices.at(i * 3) = 0;
-    indices.at(i * 3 + 1) = (i % resolution) + 1;
-    indices.at(i * 3 + 2) = ((i + 1) % resolution) + 1;
+    indices.emplace_back(0);
+    indices.emplace_back((i % resolution) + 1);
+    indices.emplace_back(((i + 1) % resolution) + 1);
   }
   return indices;
+}
+
+/**
+ * @returns a 2D `Dusk::geom::Shape` representing a circle.
+ */
+export auto shape(float x = 0.f, float y = 0.f, float r = 1.f,
+                  std::uint16_t resolution = CIRCLE_RESOLUTION)
+    -> Dusk::geom::Shape {
+  return {.vertices = indexed_vertices(x, y, r, resolution),
+          .indices = indices(resolution)};
 }
 
 }  // namespace Dusk::geom::circle
